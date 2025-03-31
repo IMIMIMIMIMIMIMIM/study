@@ -1,17 +1,8 @@
 import { useState } from "react";
 import { hamburger } from "./assets/assets";
-
-// 페이지 컴포넌트
-const Home = () => <h1 className="text-3xl font-bold text-gray-900">홈</h1>;
-const HtmlPage = () => (
-  <h1 className="text-3xl font-bold text-gray-900">HTML & CSS</h1>
-);
-const JsPage = () => (
-  <h1 className="text-3xl font-bold text-gray-900">JavaScript & TypeScript</h1>
-);
-const ReactPage = () => (
-  <h1 className="text-3xl font-bold text-gray-900">React</h1>
-);
+import Html from "./components/Html";
+import React from "./components/React";
+import Jsts from "./components/Jsts";
 
 const Wiki = () => {
   const [page, setPage] = useState("home");
@@ -23,13 +14,12 @@ const Wiki = () => {
 
   return (
     <div className="min-h-screen flex bg-beige">
-      {/* 사이드바 */}
       <nav
         className={`${
           sidebarOpen ? "w-64 p-4 opacity-100" : "w-0 p-0 opacity-0"
-        } bg-gray-100 shadow-md  fixed h-full transition-all duration-300 ease-in-out overflow-hidden`}
+        } bg-yellow-50 shadow-md fixed h-full transition-all duration-300 ease-in-out overflow-hidden`}
       >
-        {/* 사이드바 내부의 햄버거 아이콘 (열렸을 때 위치) */}
+        {/* 사이드바 내부의 닫기 버튼 */}
         {sidebarOpen && (
           <button
             onClick={toggleSidebar}
@@ -39,9 +29,10 @@ const Wiki = () => {
           </button>
         )}
         <h2
-          className={`text-xl font-bold text-gray-800 mb-6 transition-opacity duration-300 ${
+          className={`text-xl font-bold text-gray-800 mb-6 transition-opacity duration-300 cursor-pointer ${
             sidebarOpen ? "opacity-100" : "opacity-0"
           }`}
+          onClick={() => setPage("home")}
         >
           Wiki
         </h2>
@@ -72,6 +63,8 @@ const Wiki = () => {
           </li>
         </ul>
       </nav>
+
+      {/* 사이드바 열기 버튼 (닫혀 있을 때만 표시) */}
       {!sidebarOpen && (
         <button
           onClick={toggleSidebar}
@@ -81,24 +74,19 @@ const Wiki = () => {
         </button>
       )}
 
-      <div className="flex flex-col overflow-hidden items-center justify-center flex-1">
-        <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-6xl font-bold text-gray-900 mb-4">Wiki</h1>
-
-          <input
-            type="text"
-            placeholder=""
-            className="px-4 py-2 w-72 sm:w-96 border rounded-3xl border-gray-300"
-          />
-        </div>
-
-        {/* 현재 선택된 페이지 출력 */}
-        {/* <div className="mt-8 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg text-center">
-          {page === "home" && <Home />}
-          {page === "htmlcss" && <HtmlPage />}
-          {page === "jsts" && <JsPage />}
-          {page === "react" && <ReactPage />}
-        </div> */}
+      <div className="flex-1 p-6">
+        {page === "home" && (
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <h1 className="text-6xl font-bold text-gray-900 mb-4">Wiki</h1>
+            <input
+              type="text"
+              className="px-4 py-2 w-72 sm:w-96 border rounded-3xl border-gray-300"
+            />
+          </div>
+        )}
+        {page === "htmlcss" && <Html />}
+        {page === "jsts" && <Jsts />}
+        {page === "react" && <React />}
       </div>
     </div>
   );
