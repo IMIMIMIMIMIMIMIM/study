@@ -1,28 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import sectionData from "../assets/data/HtmlData.json";
 
 const Html = () => {
-  const sectionData = [
-    {
-      title: "px, em, rem 의 차이",
-      content: "px: 고정된 크기, em: 부모 요소 기준, rem: 루트 요소 기준",
-    },
-    {
-      title: "CSS 선택자의 우선순위",
-      content:
-        "ID 선택자의 우선순위가 가장 높으며 그 다음으로 클래스, 태그 선택자 순서로 적용. 만약 우선순위가 같은 선택자가 있다면 나중에 선언된 것이 우선 적용.",
-    },
-    {
-      title: "Flexbox란",
-      content:
-        "Flexbox는 요소를 유연하게 배치하고 정렬할 수 있는 도구. 부모 컨테이너에 display: flex를 설정하고, 자식 요소들에 대해 정렬과 배치를 세밀하게 제어할 수 있음",
-    },
-    {
-      title: "margin과 padding의 차이",
-      content: "margin: 요소 외부 여백, padding: 요소 내부 여백",
-    },
-  ];
-
-  // 동적으로 섹션 키를 생성하는 함수
   const generateSections = (data: { title: string; content: string }[]) => {
     return data.map((section, index) => ({
       key: `section${index}`, // 섹션을 고유하게 구분할 수 있는 key
@@ -46,7 +25,7 @@ const Html = () => {
     }));
   };
 
-  // 검색어에 따라 자동완성 목록 필터링
+  // 검색어에 따라 자동완성 필터링
   const filteredSections = sections.filter((section) =>
     section.title.toLowerCase().includes(search.toLowerCase())
   );
@@ -61,9 +40,26 @@ const Html = () => {
       ...prevState,
       [key]: true,
     }));
-    // 자동완성 목록 닫기
-    setSearch(""); // 검색어는 그대로 남기기
+    setSearch("");
   };
+
+  useEffect(() => {
+    const savedSection = localStorage.getItem("selectedSection");
+
+    if (savedSection) {
+      setTimeout(() => {
+        setOpenSections((prev) => ({
+          ...prev,
+          [savedSection]: true,
+        }));
+        sectionRefs.current[savedSection]?.scrollIntoView({
+          behavior: "smooth",
+        });
+
+        localStorage.removeItem("selectedSection"); // ✅ 사용 후 제거
+      }, 500);
+    }
+  }, []);
 
   return (
     <div className="space-y-6 ml-64 mr-64">
@@ -75,7 +71,7 @@ const Html = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {/* 자동완성 목록 */}
+        {/* 자동완성 */}
         {search && filteredSections.length > 0 && (
           <ul className="absolute top-full w-96 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
             {filteredSections.map((section) => (
@@ -91,7 +87,7 @@ const Html = () => {
         )}
       </div>
 
-      {/* 각 섹션들 */}
+      {/* 섹션 */}
       {sections.map((section) => (
         <div
           key={section.key}
@@ -112,7 +108,14 @@ const Html = () => {
             }`}
           >
             <div className="p-4 bg-blue-100 rounded-md text-gray-800">
-              <p>{section.content}</p>
+              <p>
+                {section.content.split("\n").map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
         </div>

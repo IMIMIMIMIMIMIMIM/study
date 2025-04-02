@@ -1,0 +1,42 @@
+[
+  {
+    "title": "px, em, rem 의 차이",
+    "content": "px: 고정된 크기\n em: 부모 요소 기준\n rem: 루트 요소 기준"
+  },
+  {
+    "title": "CSS 선택자의 우선순위",
+    "content": "ID 선택자의 우선순위가 가장 높으며 그 다음으로 클래스, 태그 선택자 순서로 적용.\n 만약 우선순위가 같은 선택자가 있다면 나중에 선언된 것이 우선 적용."
+  },
+  {
+    "title": "Flexbox란",
+    "content": "Flexbox는 요소를 유연하게 배치하고 정렬할 수 있는 도구.\n 부모 컨테이너에 display: flex를 설정하고, 자식 요소들에 대해 정렬과 배치를 세밀하게 제어할 수 있음"
+  },
+  {
+    "title": "margin과 padding의 차이",
+    "content": "margin: 요소 외부 여백\n padding: 요소 내부 여백"
+  },
+  {
+    "title": "시멘틱 마크업이란",
+    "content": "HTML 태그가 단순히 레이아웃을 만드는 것이 아니라, 태그 자체가 의미(semantic)를 가지도록 작성하는 방식"
+  },
+  {
+    "title": "display 속성",
+    "content": "block: 새 줄에서 시작됨, 가로 전체를 차지\n inline: 줄 바꿈 없이 한 줄에 배치, 내용만큼만 크기 차지"
+  },
+  {
+    "title": "position 속성",
+    "content": "static: 기본 위치 지정 방식, 요소는 문서의 일반적인 흐름에 따라 배치됨.\n relative: 기본 위치를 기준으로 상대적인 위치를 지정, 요소가 원래 자리를 유지하면서 이동\n absolute: 가장 가까운 부모 요소를 기준으로 배치, 부모에 relative가 없다면 body를 기준으로 배치\n fixed: 브라우저 창을 기준으로 고정된 위치에 배치"
+  },
+  {
+    "title": "SCSS란",
+    "content": "CSS를 보다 효율적으로 작성할 수 있도록 확장한 스타일 언어\n 변수, 중첩, Mixin, Extend 같은 기능을 제공해 코드를 더 깔끔하고 재사용 가능하게 만듦"
+  },
+  {
+    "title": "script 태그에서 Async와 Defer의 차이",
+    "content": "Async: 로드가 끝나면 즉시 실행 -> HTML 파싱이 멈춤, 순서 보장 X\n defer: HTML 파싱이 끝난 후 실행, 작성된 순서대로 실행"
+  },
+  {
+    "title": "가상 클래스란",
+    "content": "특정 상태일 때 요소에 스타일을 적용하는 CSS 선택자\n(예: hover, focus, active, checked)"
+  }
+]
