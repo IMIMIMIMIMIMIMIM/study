@@ -1,6 +1,30 @@
 [
   {
-    "title": "가나다라마",
-    "content": "px: 고정된 크기\n em: 부모 요소 기준\n rem: 루트 요소 기준"
+    "title": "State란",
+    "content": "컴포넌트 안에서 변할 수 있는 데이터 -> 값이 바뀌면 컴포넌트는 자동으로 리렌더링"
+  },
+  {
+    "title": "State 관리 방법",
+    "content": "useState : 컴포넌트 안에서만 사용, 가장 가볍고 빠르며 자주 쓰임\n useReducer : 여러 상태가 한 번에 변경되는 경우, 액션 기반으로 관리 가능\n props drilling -> 계단식 상태 전달 \n Context API : 전역 상태 전달 \n 전역 상태 관리 도구 : Redux, Recoil, Zustand..."
+  },
+  {
+    "title": "setState를 사용하는 이유",
+    "content": "React는 상태를 추적해서 UI를 바꾸기 때문 \n 1. 새로운 값 등록\n 2. 이전 값과 비교\n 3. 바뀌었다면 컴포넌트를 리렌더\n 4. Virtual DOM을 비교하고 실제 DOM 업데이트"
+  },
+  {
+    "title": "props drilling이란",
+    "content": "부모 컴포넌트에서 자식 컴포넌트로 필요한 데이터를 계속 계단식으로 내려보내는 것\n 코드가 복잡해지고 유지보수가 어려워지며 불필요한 리렌더링 발생\n ->전역 상태 관리를 사용하여 해결"
+  },
+  {
+    "title": "Virtual DOM이란",
+    "content": "빠르고 효율적으로 UI를 업데이트할 수 있게 도와주는 기술 \n 1. 상태 변경 감지\n 2. 새로운 가상 돔(Virtual DOM) 생성\n 3. 기존 가상 돔과 새 가상 돔을 비교\n 4. 실제 DOM에 변경된 부분만 반영"
+  },
+  {
+    "title": "diff 알고리즘이란",
+    "content": "변경 전후의 Virtual DOM을 비교하여 무엇이 바뀌었는지 판단하는 알고리즘\n -> DOM 전체를 매번 새로 생성하는 것은 성능 상 안 좋기 때문"
+  },
+  {
+    "title": "Element와 Component의 차이",
+    "content": "Element: UI를 구성하는 최소 단위, JSX 태그 형태, 단순 표현만 가능하며 생성되면 바뀌지 않음\n Component: 재사용 가능한 UI 조각, 함수 또는 클래스 형태, 상태관리와 이벤트 처리가 가능하며 내부 상태에 따라 변화 가능"
   }
 ]
