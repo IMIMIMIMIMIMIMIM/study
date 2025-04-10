@@ -16,7 +16,7 @@
     "content": "margin: 요소 외부 여백\n padding: 요소 내부 여백"
   },
   {
-    "title": "시멘틱 마크업이란",
+    "title": "시맨틱 마크업이란",
     "content": "HTML 태그가 단순히 레이아웃을 만드는 것이 아니라, 태그 자체가 의미(semantic)를 가지도록 작성하는 방식"
   },
   {
