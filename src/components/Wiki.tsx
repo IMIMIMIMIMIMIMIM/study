@@ -22,9 +22,10 @@ const Wiki = () => {
   ];
 
   const [sections, setSections] = useState(allSections);
-
   const navigate = useNavigate();
   const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const sectionTitle = params.get("section");
 
   useEffect(() => {
     if (page !== "home") {
@@ -79,6 +80,11 @@ const Wiki = () => {
     navigate(`/${item.page}?section=${encodeURIComponent(item.title)}`);
   };
 
+  const goToPage = (name: string) => {
+    setPage(name);
+    navigate(`/${name}`); // 쿼리 없이 깔끔하게!
+  };
+
   return (
     <div className="min-h-screen flex bg-beige">
       <nav
@@ -97,14 +103,18 @@ const Wiki = () => {
         )}
         <h2
           className="text-2xl font-bold inline-block text-gray-800 mb-6 cursor-pointer"
-          onClick={() => setPage("home")}
+          onClick={() => {
+            setPage("home");
+            navigate("/wiki");
+            setSections(allSections); // 메인으로 돌아올 경우 섹션 초기화
+          }}
         >
           Wiki
         </h2>
         <ul className="space-y-4">
           <li>
             <button
-              onClick={() => setPage("htmlcss")}
+              onClick={() => goToPage("htmlcss")}
               className="block w-full text-left"
             >
               HTML & CSS
@@ -112,7 +122,7 @@ const Wiki = () => {
           </li>
           <li>
             <button
-              onClick={() => setPage("jsts")}
+              onClick={() => goToPage("jsts")}
               className="block w-full text-left"
             >
               JS & TS
@@ -120,7 +130,7 @@ const Wiki = () => {
           </li>
           <li>
             <button
-              onClick={() => setPage("react")}
+              onClick={() => goToPage("react")}
               className="block w-full text-left"
             >
               React
@@ -165,9 +175,9 @@ const Wiki = () => {
             </div>
           </div>
         )}
-        {page === "htmlcss" && <Html />}
-        {page === "jsts" && <Jsts />}
-        {page === "react" && <ReactComp />}
+        {page === "htmlcss" && <Html targetSection={sectionTitle} />}
+        {page === "jsts" && <Jsts targetSection={sectionTitle} />}
+        {page === "react" && <ReactComp targetSection={sectionTitle} />}
       </div>
     </div>
   );

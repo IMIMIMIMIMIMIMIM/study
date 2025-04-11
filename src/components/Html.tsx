@@ -1,22 +1,45 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import sectionData from "../assets/data/HtmlData.json";
 
-const Html = () => {
-  const generateSections = (data: { title: string; content: string }[]) => {
-    return data.map((section, index) => ({
-      key: `section${index}`, // 섹션을 고유하게 구분할 수 있는 key
-      title: section.title,
-      content: section.content,
-    }));
-  };
-
-  const sections = generateSections(sectionData); // 동적으로 섹션 생성
+const Html = ({ targetSection }: { targetSection: string | null }) => {
+  const sections = useMemo(
+    () =>
+      sectionData.map((section, index) => ({
+        key: `section${index}`,
+        title: section.title,
+        content: section.content,
+      })),
+    []
+  );
 
   const [search, setSearch] = useState("");
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>(
     {}
   );
+
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const hasScrolled = useRef(false); // 중복 스크롤 방지
+
+  // targetSection으로 해당 섹션 열고 스크롤
+  useEffect(() => {
+    if (targetSection && !hasScrolled.current) {
+      const matched = sections.find(
+        (section) => section.title === targetSection
+      );
+
+      if (matched) {
+        const { key } = matched;
+
+        setOpenSections((prev) => ({
+          ...prev,
+          [key]: true,
+        }));
+
+        sectionRefs.current[key]?.scrollIntoView({ behavior: "smooth" });
+        hasScrolled.current = true;
+      }
+    }
+  }, [targetSection, sections]);
 
   const toggleSection = (section: string) => {
     setOpenSections((prevState) => ({
@@ -25,41 +48,20 @@ const Html = () => {
     }));
   };
 
-  // 검색어에 따라 자동완성 필터링
+  // 자동완성 필터링
   const filteredSections = sections.filter((section) =>
     section.title.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleAutoCompleteClick = (key: string) => {
-    // 섹션으로 스크롤 이동
-    sectionRefs.current[key]?.scrollIntoView({
-      behavior: "smooth",
-    });
-    // 해당 섹션 열기
+    sectionRefs.current[key]?.scrollIntoView({ behavior: "smooth" });
+
     setOpenSections((prevState) => ({
       ...prevState,
       [key]: true,
     }));
     setSearch("");
   };
-
-  useEffect(() => {
-    const savedSection = localStorage.getItem("selectedSection");
-
-    if (savedSection) {
-      setTimeout(() => {
-        setOpenSections((prev) => ({
-          ...prev,
-          [savedSection]: true,
-        }));
-        sectionRefs.current[savedSection]?.scrollIntoView({
-          behavior: "smooth",
-        });
-
-        localStorage.removeItem("selectedSection"); // ✅ 사용 후 제거
-      }, 500);
-    }
-  }, []);
 
   return (
     <div className="space-y-6 ml-64 mr-64">
@@ -78,7 +80,7 @@ const Html = () => {
               <li
                 key={section.key}
                 className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                onClick={() => handleAutoCompleteClick(section.key)} // 클릭 시 자동완성 목록 닫기
+                onClick={() => handleAutoCompleteClick(section.key)}
               >
                 {section.title}
               </li>
