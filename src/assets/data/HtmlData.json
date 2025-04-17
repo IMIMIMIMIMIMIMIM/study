@@ -21,7 +21,7 @@
   },
   {
     "title": "display 속성",
-    "content": "block: 새 줄에서 시작됨, 가로 전체를 차지\n inline: 줄 바꿈 없이 한 줄에 배치, 내용만큼만 크기 차지"
+    "content": "HTML 요소가 페이지에 어떻게 렌더링될지를 결정하는 CSS의 핵심 속성\n\n block: 새 줄에서 시작됨, 가로 전체를 차지\n inline: 줄 바꿈 없이 한 줄에 배치, 내용만큼만 크기 차지\n inline-block: inline처럼 동작하지만 내부에 width, height 적용 가능\n none: 요소를 렌더링하지 않음\n flex: 플렉스 컨테이너로 설정, 자식 요소들을 유연하게 배치\n inline-flex: flex와 동일하지만 inline처럼 동작\n grid: CSS grid 컨테이너, 행과 열 기반으로 배치\n inline-grid: grid와 동일하지만 inline처럼 동작"
   },
   {
     "title": "position 속성",
