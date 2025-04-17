@@ -105,7 +105,7 @@ const Jsts = ({ targetSection }: { targetSection: string | null }) => {
           <div
             className={`overflow-hidden transition-all duration-300 ${
               openSections[section.key]
-                ? "max-h-96 opacity-100 mt-2"
+                ? "max-h-full opacity-100 mt-2"
                 : "max-h-0 opacity-0"
             }`}
           >

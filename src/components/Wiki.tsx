@@ -54,7 +54,7 @@ const Wiki = () => {
         if (target) {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }, 500); // 페이지가 완전히 렌더링될 때까지 대기
+      }, 500);
     }
   }, [page]);
 
@@ -82,8 +82,11 @@ const Wiki = () => {
 
   const goToPage = (name: string) => {
     setPage(name);
-    navigate(`/${name}`); // 쿼리 없이 깔끔하게!
+    navigate(`/${name}`);
   };
+
+  const selectMenu = (name: string) =>
+    `block w-full text-left ${page === name ? "font-bold" : ""}`;
 
   return (
     <div className="min-h-screen flex bg-beige">
@@ -106,7 +109,8 @@ const Wiki = () => {
           onClick={() => {
             setPage("home");
             navigate("/wiki");
-            setSections(allSections); // 메인으로 돌아올 경우 섹션 초기화
+            setSections(allSections); // 메인으로 돌아올 경우 섹션 초기화, 검색 관련
+            setSidebarOpen(false);
           }}
         >
           Wiki
@@ -115,7 +119,7 @@ const Wiki = () => {
           <li>
             <button
               onClick={() => goToPage("htmlcss")}
-              className="block w-full text-left"
+              className={selectMenu("htmlcss")}
             >
               HTML & CSS
             </button>
@@ -123,7 +127,7 @@ const Wiki = () => {
           <li>
             <button
               onClick={() => goToPage("jsts")}
-              className="block w-full text-left"
+              className={selectMenu("jsts")}
             >
               JS & TS
             </button>
@@ -131,7 +135,7 @@ const Wiki = () => {
           <li>
             <button
               onClick={() => goToPage("react")}
-              className="block w-full text-left"
+              className={selectMenu("react")}
             >
               React
             </button>
@@ -165,7 +169,10 @@ const Wiki = () => {
                     <li
                       key={item.title}
                       className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                      onClick={() => handleSelectSuggestion(item)}
+                      onClick={() => {
+                        handleSelectSuggestion(item);
+                        setSidebarOpen(true);
+                      }}
                     >
                       {item.title}
                     </li>
