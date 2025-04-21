@@ -12,36 +12,43 @@ import Search from "./Search";
 const Wiki = () => {
   const [page, setPage] = useState("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  //   const [highlightIndex, setHighlightIndex] = useState(-1);
-  //   const [isFocused, setIsFocused] = useState(false);
-  const [recentSearch, setRecentSearch] = useState<string[]>([]);
-  const [suggestions, setSuggestions] = useState<
-    { title: string; page: string }[]
-  >([]);
+  const [sections, setSections] = useState<{ title: string; page: string }[]>(
+    []
+  );
+
   const allSections = [
     ...htmlData.map((item) => ({ title: item.title, page: "htmlcss" })),
     ...jsData.map((item) => ({ title: item.title, page: "jsts" })),
     ...reactData.map((item) => ({ title: item.title, page: "react" })),
   ];
-  const [sections, setSections] = useState(allSections);
 
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const sectionTitle = params.get("section");
 
+  // 페이지 전환시 섹션 목록 업데이트
   useEffect(() => {
-    // URL에서 section 파라미터를 가져와 해당 섹션으로 스크롤 이동
-    const params = new URLSearchParams(location.search);
-    const sectionTitle = params.get("section");
+    if (page !== "home") {
+      setTimeout(() => {
+        const headings = Array.from(document.querySelectorAll("h2"));
+        const newSections = headings.map((heading) => ({
+          title: heading.textContent || "제목 없음",
+          page,
+        }));
+        setSections(newSections);
+      }, 200);
+    }
+  }, [page]);
 
+  // 섹션 파라미터가 있을 때 해당 섹션으로 스크롤
+  useEffect(() => {
+    const sectionTitle = params.get("section");
     if (sectionTitle) {
       setTimeout(() => {
         const target = Array.from(document.querySelectorAll("h2")).find(
           (h2) => h2.textContent === sectionTitle
         );
-
         if (target) {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
         }
@@ -49,15 +56,7 @@ const Wiki = () => {
     }
   }, [page]);
 
-  //   useEffect(() => {
-  //     const saved = localStorage.getItem("recentSearch");
-  //     if (saved) setRecentSearch(JSON.parse(saved));
-  //   }, []);
-
   const handleSelectSuggestion = (item: { title: string; page: string }) => {
-    setSearch("");
-    setSuggestions([]);
-    saveRecentSearch(item.title);
     setPage(item.page);
     navigate(`/${item.page}?section=${encodeURIComponent(item.title)}`);
   };
@@ -70,21 +69,10 @@ const Wiki = () => {
   const selectMenu = (name: string) =>
     `block w-full text-left ${page === name ? "font-bold" : ""}`;
 
-  const saveRecentSearch = (title: string) => {
-    setRecentSearch((prev) => {
-      const updated = [title, ...prev.filter((item) => item !== title)].slice(
-        0,
-        5
-      );
-      localStorage.setItem("recentSearch", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
   return (
     <div className="min-h-screen flex bg-beige">
       <nav
-        className={` ${
+        className={`${
           sidebarOpen ? "w-64 p-4 opacity-100" : "w-0 p-0 opacity-0"
         } 
           bg-yellow-50 shadow-md fixed h-full transition-all duration-300 ease-in-out overflow-hidden`}
@@ -102,7 +90,7 @@ const Wiki = () => {
           onClick={() => {
             setPage("home");
             navigate("/wiki");
-            setSections(allSections); // 메인으로 돌아올 경우 섹션 초기화, 검색 관련
+            setSections(allSections);
             setSidebarOpen(false);
           }}
         >
