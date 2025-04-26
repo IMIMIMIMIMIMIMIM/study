@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { hamburger } from "../assets/assets";
 import Html from "./Html";
 import Jsts from "./Jsts";
@@ -11,9 +11,6 @@ import React from "./React";
 
 const Wiki = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sections, setSections] = useState<{ title: string; page: string }[]>(
-    []
-  );
 
   const allSections = [
     ...htmlData.map((item) => ({ title: item.title, page: "htmlcss" })),
@@ -26,19 +23,11 @@ const Wiki = () => {
   const params = new URLSearchParams(location.search);
   const sectionTitle = params.get("section");
   const currentPath = location.pathname.replace("/", "") || "home";
-
-  // 섹션 파라미터가 있을 때 해당 섹션으로 스크롤
-  useEffect(() => {
-    const section = document.getElementById(sectionTitle || "");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [sectionTitle]);
-
   const isMobile = window.innerWidth < 768;
 
   const handleSelectSuggestion = (item: { title: string; page: string }) => {
-    navigate(`/${item.page}?section=${encodeURIComponent(item.title)}`);
+    navigate(`/${item.page}?section=${encodeURIComponent(item.title)}`),
+      { replace: true };
     if (isMobile) {
       setSidebarOpen(false);
     }
@@ -73,8 +62,7 @@ const Wiki = () => {
         <h2
           className="text-2xl font-bold inline-block text-gray-800 mb-6 cursor-pointer"
           onClick={() => {
-            navigate("/wiki");
-            setSections(allSections);
+            navigate("/");
             setSidebarOpen(false);
           }}
         >
@@ -118,7 +106,7 @@ const Wiki = () => {
       )}
 
       <div className="flex-1 p-6 flex">
-        {currentPath === "wiki" && (
+        {currentPath === "home" && (
           <div className="flex flex-col items-center justify-center flex-1">
             <h1 className="text-6xl font-bold text-gray-900 mb-4">Wiki</h1>
             <Search
