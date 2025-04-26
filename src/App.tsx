@@ -3,7 +3,7 @@ import Wiki from "./components/Wiki";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/wiki">
       <Routes>
         <Route path="/*" element={<Wiki />} />
       </Routes>

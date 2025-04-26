@@ -19,7 +19,7 @@ const Html = ({
         key: `section${index}`,
         title: section.title,
         content: section.content,
-        page: "html", // 섹션이 속한 페이지 정보
+        page: "html",
       })),
     []
   );
@@ -28,11 +28,10 @@ const Html = ({
     {}
   );
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const hasScrolled = useRef(false); // 중복 스크롤 방지
+  // const hasScrolled = useRef(false); // 중복 스크롤 방지
 
-  // targetSection으로 해당 섹션을 열고 스크롤
   useEffect(() => {
-    if (targetSection && !hasScrolled.current) {
+    if (targetSection) {
       const matched = sections.find(
         (section) => section.title === targetSection
       );
@@ -40,13 +39,16 @@ const Html = ({
       if (matched) {
         const { key } = matched;
 
-        setOpenSections((prev) => ({
-          ...prev,
+        setOpenSections({
           [key]: true,
-        }));
+        });
 
-        sectionRefs.current[key]?.scrollIntoView({ behavior: "smooth" });
-        hasScrolled.current = true;
+        setTimeout(() => {
+          sectionRefs.current[key]?.scrollIntoView({
+            block: "center",
+            behavior: "smooth",
+          });
+        }, 100); // 부드럽게 하기 위해 약간 딜레이 줘도 됨
       }
     }
   }, [targetSection, sections]);
